@@ -1,33 +1,53 @@
+import Link from 'next/link'
 import { BarChartIcon, MapIcon, QuestionMarkIcon, RightArrowIcon } from './icons'
 
-export default function Navigation ({}) {
+const PAGES = {
+  map: {
+    route: '/',
+    text: 'Map',
+    icon: <MapIcon size={22} />
+  },
+  statistics: {
+    route: '/statistics',
+    text: 'Statistics',
+    icon: <BarChartIcon size={22} />
+  },
+  about: {
+    route: '/about',
+    text: 'About',
+    icon: <QuestionMarkIcon size={22} />
+  }
+}
+
+export default function Navigation ({ currentPage = '/' }) {
   return (
-    <nav className="flex items-center gap-6 p-2 bg-surface rounded-full w-fit min-h-[3.125em]">
-      <div className="flex items-center gap-2">
+    <nav className="flex items-center gap-6 p-2 bg-surface rounded-full w-fit">
+      <Link className="flex items-center gap-2" href="/">
         <span className="w-7 h-7 bg-violet-500 rounded-full"></span>
         <span className="font-museo-moderno text-xl font-bold">DiFLUsion</span>
-      </div>
-      <ul className="max-md:hidden flex items-center gap-6 px-5 text-lg font-medium text-on-surface-variant">
-        <li className="hover:text-on-surface text-on-surface">
-          <a className="flex gap-2 px-1 py-[2px] border-b-2 border-on-surface" href="">
-            <MapIcon size={22} />
-            Map
-          </a>
-        </li>
-        <li className="hover:text-on-surface">
-          <a className="flex gap-2 px-1 py-[2px]" href="">
-            <BarChartIcon size={22} />
-            Statics
-          </a>
-        </li>
-        <li className="hover:text-on-surface">
-          <a className="flex gap-2 px-1 py-[2px]" href="">
-            <QuestionMarkIcon size={22} />
-            About
-          </a>
-        </li>
+      </Link>
+      <ul className="max-sm:hidden flex items-center gap-6 px-5 text-lg font-medium text-on-surface-variant">
+        {Object.values(PAGES).map(({ route, text, icon }) => {
+          if (route === currentPage) {
+            return (
+              <li className="relative text-on-surface" key={route}>
+                <Link className="flex gap-2 px-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
+                  href={route}>
+                  {icon}{text}
+                </Link>
+              </li>
+            )
+          }
+          return (
+            <li className="hover:text-on-surface" key={route}>
+              <Link className="flex gap-2 px-1" href={route}>
+                {icon}{text}
+              </Link>
+            </li>
+          )
+        })}
       </ul>
-      <button className="md:hidden">
+      <button className="sm:hidden">
         <RightArrowIcon size={24} />
       </button>
     </nav>
