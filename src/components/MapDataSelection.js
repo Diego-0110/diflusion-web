@@ -20,39 +20,48 @@ const DATA = {
   }
 }
 
-export default function MapDataSelection ({ currentData = DATA.alarms.id }) {
+export default function MapDataSelection ({ currentDataId = DATA.alarms.id, handleDataClick = (id) => { console.log(id) } }) {
   const {
-    isToggled: isHidden, handleClick
+    isToggled: isHidden, handleClick: handleToggleClick
   } = useToggle(false)
+  const currentData = Object.values(DATA).find(data => data.id === currentDataId)
   return (
-    <section className="flex items-center gap-4 w-fit py-1 pl-4 pr-2 rounded-full text-on-primary font-medium bg-primary">
-      <ul className="flex gap-6 text-on-primary-variant">
-        {Object.values(DATA).map((data) => {
-          if (data.id === currentData) {
-            return (
-              <li key={data.id} className="relative text-on-primary">
-                <button className="flex items-center px-2 gap-2 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
-                  type="button">
-                  {data.icon} {data.text}
-                </button>
-              </li>
-            )
+    <section className="flex max-sm:flex-col items-center max-sm:items-start gap-4 w-fit py-2 pl-4 pr-2 rounded-full max-sm:rounded-[1.25em] text-on-primary font-medium bg-primary">
+      <header className="flex items-center gap-3">
+        <div className="relative text-on-primary">
+          <button className="flex items-center px-2 gap-2 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
+            type="button" onClick={() => handleDataClick(currentData.id)}>
+            {currentData.icon} {currentData.text}
+          </button>
+        </div>
+        <button className="max-sm:hidden" type="button" onClick={handleToggleClick}>
+          {isHidden
+            ? <RightArrowIcon size={20} />
+            : <RightArrowIcon className="rotate-180" size={20} />
           }
-          if (isHidden) {
+        </button>
+        <button className="sm:hidden" type="button" onClick={handleToggleClick}>
+          {isHidden
+            ? <RightArrowIcon className="rotate-90" size={20} />
+            : <RightArrowIcon className="-rotate-90" size={20} />
+          }
+        </button>
+      </header>
+      {!isHidden && <ul className="flex max-sm:flex-col gap-4 text-on-primary-variant">
+        {Object.values(DATA).map((data) => {
+          if (data.id === currentDataId) {
             return null
           }
           return (
             <li key={data.id} className="hover:text-on-primary">
-              <button className="flex items-center px-2 gap-2" type="button">
+              <button className="flex items-center px-2 gap-2" type="button"
+                onClick={() => handleDataClick(data.id)}>
                 {data.icon} {data.text}
               </button>
             </li>
           )
         })}
-      </ul>
-      <button className="-scale-x-100" type="button" onClick={handleClick}>
-        <RightArrowIcon size={20} />
-      </button>
+      </ul>}
     </section>
   )
 }
