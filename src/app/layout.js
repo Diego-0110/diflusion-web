@@ -23,7 +23,7 @@ export default function RootLayout ({ children }) {
   return (
     <html lang="en" className={`${museoModerno.variable} ${outfit.variable} `}>
       <body className="font-outfit text-on-surface">
-        <header className="fixed p-2">
+        <header className="fixed p-2 z-50">
           <Navigation />
         </header>
         {children}

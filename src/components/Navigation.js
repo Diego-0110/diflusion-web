@@ -21,12 +21,17 @@ const PAGES = {
 
 export default function Navigation ({ currentPage = '/' }) {
   return (
-    <nav className="flex items-center gap-6 p-2 bg-surface rounded-full w-fit">
-      <Link className="flex items-center gap-2" href="/">
-        <span className="w-7 h-7 bg-violet-500 rounded-full"></span>
-        <span className="font-museo-moderno text-xl font-bold">DiFLUsion</span>
-      </Link>
-      <ul className="max-sm:hidden flex items-center gap-6 px-5 text-lg font-medium text-on-surface-variant">
+    <nav className="flex max-sm:flex-col items-center gap-6 p-2 bg-surface rounded-full max-sm:rounded-3xl w-fit">
+      <div className="flex gap-6">
+        <Link className="flex items-center self-start gap-2" href="/">
+          <span className="w-7 h-7 bg-violet-500 rounded-full"></span>
+          <span className="font-museo-moderno text-xl font-bold">DiFLUsion</span>
+        </Link>
+        <button className="sm:hidden">
+          <RightArrowIcon size={24} />
+        </button>
+      </div>
+      <ul className="flex max-sm:flex-col items-center gap-6 px-5 text-lg font-medium text-on-surface-variant">
         {Object.values(PAGES).map(({ route, text, icon }) => {
           if (route === currentPage) {
             return (
@@ -47,9 +52,6 @@ export default function Navigation ({ currentPage = '/' }) {
           )
         })}
       </ul>
-      <button className="sm:hidden">
-        <RightArrowIcon size={24} />
-      </button>
     </nav>
   )
 }
