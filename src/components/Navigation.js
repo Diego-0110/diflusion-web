@@ -1,26 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { BarChartIcon, MapIcon, QuestionMarkIcon, RightArrowIcon } from './icons'
+import { RightArrowIcon } from './icons'
+import { PAGES } from '@/constants/pages'
 import useToggle from '@/utils/hooks/useToggle'
-
-const PAGES = {
-  map: {
-    route: '/',
-    text: 'Map',
-    icon: <MapIcon size={22} />
-  },
-  statistics: {
-    route: '/statistics',
-    text: 'Statistics',
-    icon: <BarChartIcon size={22} />
-  },
-  about: {
-    route: '/about',
-    text: 'About',
-    icon: <QuestionMarkIcon size={22} />
-  }
-}
 
 export default function Navigation ({ currentPage = '/' }) {
   const {
