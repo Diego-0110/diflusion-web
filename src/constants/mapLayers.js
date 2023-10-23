@@ -1,4 +1,4 @@
-export const dataLayer = {
+export const clusteredPointLayer = {
   id: 'alarm-points',
   type: 'circle',
   source: 'alarms',
