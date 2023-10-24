@@ -29,28 +29,58 @@ export const DATA_MAP = {
   [DATA_ID.alarms]: {
     text: 'Alarms',
     icon: <WarningIcon size={20} />,
-    source: '',
+    source: '/data/alertas.geojson',
     renderModes: {
-      cluster: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
-      heatMap: [heatmapLayer]
+      cluster: {
+        layers: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
+        props: {
+          cluster: true, clusterMaxZoom: 14, clusterRadius: 30
+        }
+      },
+      heatMap: {
+        layers: [heatmapLayer],
+        props: {
+
+        }
+      }
     }
   },
   [DATA_ID.outbreaks]: {
     text: 'Outbreaks',
     icon: <MaskIcon size={24} />,
-    source: '',
+    source: '/data/brotes.geojson',
     renderModes: {
-      cluster: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
-      heatMap: [heatmapLayer]
+      cluster: {
+        layers: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
+        props: {
+          cluster: true, clusterMaxZoom: 14, clusterRadius: 30
+        }
+      },
+      heatMap: {
+        layers: [heatmapLayer],
+        props: {
+
+        }
+      }
     }
   },
   [DATA_ID.migrations]: {
     text: 'Migrations',
     icon: <AirlineIcon size={20} />,
-    source: '',
+    source: '/data/migrations.geojson',
     renderModes: {
-      cluster: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
-      heatMap: [heatmapLayer]
+      cluster: {
+        layers: [clusteredPointLayer, clusterCountLayer, unclusteredPointLayer],
+        props: {
+          cluster: true, clusterMaxZoom: 14, clusterRadius: 30
+        }
+      },
+      heatMap: {
+        layers: [heatmapLayer],
+        props: {
+
+        }
+      }
     }
   }
 }

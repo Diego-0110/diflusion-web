@@ -6,9 +6,10 @@ import {
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { dataLayer, clusterCountLayer, unclusteredPointLayer, heatmapLayer } from '@/constants/mapLayers'
 
-import dataGeoJSON from '@/data/alertas.json'
+import { DATA_MAP } from '@/constants/mapData'
 
-export default function MapComponent ({ ...props }) {
+export default function MapComponent ({ conf, ...props }) {
+  const confValues = DATA_MAP[conf.dataId]
   return (
     <div {...props}>
       <Map
@@ -30,8 +31,14 @@ export default function MapComponent ({ ...props }) {
           <Layer {...unclusteredPointLayer} />
         </Source> */}
         {/* HeatMap */}
-        <Source id="alarms" type="geojson" data={dataGeoJSON} generateId>
+        {/* <Source id="alarms" type="geojson" data="/data/alertas.geojson" generateId>
           <Layer {...heatmapLayer} />
+        </Source> */}
+        <Source id="data" type="geojson" data={confValues.source}
+          generateId {...confValues.renderModes.heatMap.props}>
+          {confValues.renderModes.heatMap.layers.map((layer, index) => {
+            return <Layer key={index} {...layer} />
+          })}
         </Source>
       </Map>
     </div>

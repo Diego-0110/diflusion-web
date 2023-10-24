@@ -4,31 +4,13 @@ import { AirlineIcon, MaskIcon, RightArrowIcon, WarningIcon } from './icons'
 
 import { DATA_MAP, DATA_ID } from '@/constants/mapData'
 
-const DATA = {
-  alarms: {
-    id: 1,
-    text: 'Alarms',
-    icon: <WarningIcon size={20} />
-  },
-  outbreaks: {
-    id: 2,
-    text: 'Outbreaks',
-    icon: <MaskIcon size={24} />
-  },
-  migrations: {
-    id: 3,
-    text: 'Migrations',
-    icon: <AirlineIcon size={20} />
-  }
-}
-
-export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, handleDataClick = (id) => { console.log(id) } }) {
+export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, onUpdateSelection = (id) => { console.log(id) } }) {
   const {
     isToggled: isHidden, handleClick: handleToggleClick
   } = useToggle(true)
   const currentData = DATA_MAP[currentDataId]
-  const handleClick = (id) => {
-    handleDataClick(id)
+  const handleClick = (dataId) => {
+    onUpdateSelection(dataId)
     if (!isHidden) {
       handleToggleClick()
     }
