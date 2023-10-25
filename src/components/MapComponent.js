@@ -21,6 +21,7 @@ export default function MapComponent ({ conf, ...props }) {
         style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
         mapStyle="https://demotiles.maplibre.org/style.json"
         maplibreLogo
+        onLoad={(evt) => { console.log(evt.target.getStyle()) }}
       >
         <NavigationControl position="top-right" />
         <ScaleControl />
@@ -37,7 +38,7 @@ export default function MapComponent ({ conf, ...props }) {
         <Source id="data" type="geojson" data={confValues.source}
           generateId {...confValues.renderModes.heatMap.props}>
           {confValues.renderModes.heatMap.layers.map((layer, index) => {
-            return <Layer key={index} {...layer} />
+            return <Layer key={index} beforeId="geolines-label" {...layer} />
           })}
         </Source>
       </Map>
