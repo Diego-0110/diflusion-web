@@ -4,7 +4,7 @@ import {
   ScaleControl, Source, Layer
 } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { dataLayer, clusterCountLayer, unclusteredPointLayer, heatmapLayer } from '@/constants/mapLayers'
+import { riskLevelsFillLayer, riskLevelsLineLayer } from '@/constants/mapLayers'
 
 import { DATA_MAP } from '@/constants/mapData'
 
@@ -35,12 +35,17 @@ export default function MapComponent ({ conf, ...props }) {
         {/* <Source id="alarms" type="geojson" data="/data/alertas.geojson" generateId>
           <Layer {...heatmapLayer} />
         </Source> */}
-        <Source id="data" type="geojson" data={confValues.source}
+        <Source id="risk-levels" type="geojson" data="/data/testRiskLevels.geojson"
+          generateId>
+            <Layer beforeId="geolines-label" {...riskLevelsFillLayer} />
+            <Layer beforeId="geolines-label" {...riskLevelsLineLayer} />
+        </Source>
+        {/* <Source id="data" type="geojson" data={confValues.source}
           generateId {...confValues.renderModes.heatMap.props}>
           {confValues.renderModes.heatMap.layers.map((layer, index) => {
             return <Layer key={index} beforeId="geolines-label" {...layer} />
           })}
-        </Source>
+        </Source> */}
       </Map>
     </div>
   )

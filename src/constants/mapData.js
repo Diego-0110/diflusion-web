@@ -4,7 +4,7 @@ import { clusteredPointLayer, clusterCountLayer, unclusteredPointLayer, heatmapL
 export const DATA = {
   alarms: {
     id: 1,
-    text: 'Alarms',
+    text: 'Risk Levels',
     icon: <WarningIcon size={20} />
   },
   outbreaks: {
@@ -14,7 +14,7 @@ export const DATA = {
   },
   migrations: {
     id: 3,
-    text: 'Migrations',
+    text: 'Risk Routes',
     icon: <AirlineIcon size={20} />
   }
 }
@@ -27,7 +27,7 @@ export const DATA_ID = {
 
 export const DATA_MAP = {
   [DATA_ID.alarms]: {
-    text: 'Alarms',
+    text: 'Risk Levels',
     icon: <WarningIcon size={20} />,
     source: '/data/alertas.geojson',
     renderModes: {
@@ -65,7 +65,7 @@ export const DATA_MAP = {
     }
   },
   [DATA_ID.migrations]: {
-    text: 'Migrations',
+    text: 'Risk Routes',
     icon: <AirlineIcon size={20} />,
     source: '/data/migrations.geojson',
     renderModes: {

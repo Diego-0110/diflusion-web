@@ -74,3 +74,34 @@ export const heatmapLayer = {
     // 'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 7, 1, 9, 0]
   }
 }
+
+export const riskLevelsFillLayer = {
+  id: 'risk-levels-fill',
+  type: 'fill',
+  paint: {
+    'fill-color': ['case',
+      ['==', ['get', 'level'], 5], '#de1b1b',
+      ['==', ['get', 'level'], 4], '#de5f1b',
+      ['==', ['get', 'level'], 3], '#de8a1b',
+      ['==', ['get', 'level'], 2], '#dec71b',
+      ['==', ['get', 'level'], 1], '#ded41b',
+      '#90de1b'],
+    'fill-opacity': 0.8
+  }
+}
+
+export const riskLevelsLineLayer = {
+  id: 'risk-levels-line',
+  type: 'line',
+  paint: {
+    'line-color': ['case',
+      ['==', ['get', 'level'], 5], '#de1b1b',
+      ['==', ['get', 'level'], 4], '#de5f1b',
+      ['==', ['get', 'level'], 3], '#de8a1b',
+      ['==', ['get', 'level'], 2], '#dec71b',
+      ['==', ['get', 'level'], 1], '#ded41b',
+      '#90de1b'],
+    'line-width': 2,
+    'line-offset': 0
+  }
+}
