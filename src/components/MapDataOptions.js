@@ -2,7 +2,7 @@
 import useToggle from '@/utils/hooks/useToggle'
 import { SettingsPanoramaIcon } from './icons'
 
-export default function MapDataOptions ({ currentDataId, currentMode }) {
+export default function MapDataOptions () {
   const {
     isToggled,
     handleClick

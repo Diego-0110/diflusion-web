@@ -2,13 +2,13 @@
 import useToggle from '@/utils/hooks/useToggle'
 import { AirlineIcon, MaskIcon, RightArrowIcon, WarningIcon } from './icons'
 
-import { DATA_MAP, DATA_ID } from '@/constants/mapData'
+import { DATA_MAP, DATA_ID, MAP_DATA_DETAILS } from '@/constants/mapData'
 
-export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, onUpdateSelection = (id) => { console.log(id) } }) {
+export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, mainData, onUpdateSelection = (id) => { console.log(id) } }) {
   const {
     isToggled: isHidden, handleClick: handleToggleClick
   } = useToggle(true)
-  const currentData = DATA_MAP[currentDataId]
+  const mainDataDetails = MAP_DATA_DETAILS[mainData]
   const handleClick = (dataId) => {
     onUpdateSelection(dataId)
     if (!isHidden) {
@@ -20,8 +20,8 @@ export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, onUp
       <header className="flex items-center gap-3">
         <div className="relative text-on-primary">
           <button className="flex items-center px-2 gap-2 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
-            type="button" onClick={() => handleClick(currentDataId)}>
-            {currentData.icon} {currentData.text}
+            type="button" onClick={() => handleClick(mainData)}>
+            {mainDataDetails.icon} {mainDataDetails.name}
           </button>
         </div>
         <button type="button" onClick={handleToggleClick}>
@@ -32,15 +32,15 @@ export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, onUp
         </button>
       </header>
       {!isHidden && <ul className="flex flex-col gap-4 text-on-primary-variant">
-        {Object.entries(DATA_MAP).map(([id, data]) => {
-          if (id === currentDataId) {
+        {MAP_DATA_DETAILS.map(dataDetails => {
+          if (dataDetails.id === mainData) {
             return null
           }
           return (
-            <li key={id} className="hover:text-on-primary">
+            <li key={dataDetails.id} className="hover:text-on-primary">
               <button className="flex items-center px-2 gap-2" type="button"
-                onClick={() => handleClick(id)}>
-                {data.icon} {data.text}
+                onClick={() => handleClick(dataDetails.id)}>
+                {dataDetails.icon} {dataDetails.name}
               </button>
             </li>
           )

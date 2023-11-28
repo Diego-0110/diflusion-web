@@ -94,13 +94,7 @@ export const riskLevelsLineLayer = {
   id: 'risk-levels-line',
   type: 'line',
   paint: {
-    'line-color': ['case',
-      ['==', ['get', 'level'], 5], '#de1b1b',
-      ['==', ['get', 'level'], 4], '#de5f1b',
-      ['==', ['get', 'level'], 3], '#de8a1b',
-      ['==', ['get', 'level'], 2], '#dec71b',
-      ['==', ['get', 'level'], 1], '#ded41b',
-      '#90de1b'],
+    'line-color': '#4c5254',
     'line-width': 2,
     'line-offset': 0
   }

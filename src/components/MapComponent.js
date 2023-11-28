@@ -6,9 +6,9 @@ import {
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { riskLevelsFillLayer, riskLevelsLineLayer } from '@/constants/mapLayers'
 
-import { DATA_MAP } from '@/constants/mapData'
+import { DATA_MAP, MAP_DATA_ID } from '@/constants/mapData'
 
-export default function MapComponent ({ conf, ...props }) {
+export default function MapComponent ({ conf, mapData, onSelectFromMap, ...props }) {
   const confValues = DATA_MAP[conf.dataId]
   return (
     <div {...props}>
@@ -22,6 +22,8 @@ export default function MapComponent ({ conf, ...props }) {
         mapStyle="https://demotiles.maplibre.org/style.json"
         maplibreLogo
         onLoad={(evt) => { console.log(evt.target.getStyle()) }}
+        interactiveLayerIds={[riskLevelsFillLayer.id]}
+        onClick={onSelectFromMap}
       >
         <NavigationControl position="top-right" />
         <ScaleControl />
@@ -35,7 +37,7 @@ export default function MapComponent ({ conf, ...props }) {
         {/* <Source id="alarms" type="geojson" data="/data/alertas.geojson" generateId>
           <Layer {...heatmapLayer} />
         </Source> */}
-        <Source id="risk-levels" type="geojson" data="/data/testRiskLevels.geojson"
+        <Source id="risk-levels" type="geojson" data={mapData[MAP_DATA_ID.riskLevels]}
           generateId>
             <Layer beforeId="geolines-label" {...riskLevelsFillLayer} />
             <Layer beforeId="geolines-label" {...riskLevelsLineLayer} />

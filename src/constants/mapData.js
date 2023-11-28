@@ -1,7 +1,7 @@
 import { AirlineIcon, MaskIcon, WarningIcon } from '@/components/icons'
 import { clusteredPointLayer, clusterCountLayer, unclusteredPointLayer, heatmapLayer } from './mapLayers'
 
-export const DATA = {
+export const MAP_DATA = {
   alarms: {
     id: 1,
     text: 'Risk Levels',
@@ -18,6 +18,26 @@ export const DATA = {
     icon: <AirlineIcon size={20} />
   }
 }
+
+export const MAP_DATA_ID = {
+  riskLevels: 0,
+  outbreaks: 1,
+  riskRoutes: 2
+}
+
+// TODO: extract size
+export const MAP_DATA_DETAILS = [
+  {
+    id: MAP_DATA_ID.riskLevels,
+    name: 'Risk Levels',
+    icon: <WarningIcon size={20} />
+  },
+  {
+    id: MAP_DATA_ID.outbreaks,
+    name: 'Outbreaks',
+    icon: <MaskIcon size={24} />
+  }
+]
 
 export const DATA_ID = {
   alarms: 'alarms',
