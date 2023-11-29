@@ -24,3 +24,9 @@
     color-scheme: dark;
   }
 }
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

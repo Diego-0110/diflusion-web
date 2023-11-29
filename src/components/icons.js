@@ -1,3 +1,4 @@
+// TODO: change sharp icons to rounded icons
 export function MapIcon ({ size = 32, color = 'currentColor', ...props }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>
@@ -58,6 +59,30 @@ export function AirlineIcon ({ size = 32, color = 'currentColor', ...props }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>
       <path fill={color} d="M9 19v-2h2q-.375-3.45-2.95-5.725T2 9V7q3.225 0 5.925 1.7T12 13.3q.95-2.025 2.5-3.588T17.975 7H14V5h7v7h-2V8.7q-2.325 1.425-4 3.525T13 17h2v2H9Z"/>
+    </svg>
+  )
+}
+
+export function LocationIcon ({ size = 32, color = 'currentColor', ...props }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>
+      <path fill={color} d="M12 2c-4.2 0-8 3.22-8 8.2c0 3.18 2.45 6.92 7.34 11.23c.38.33.95.33 1.33 0C17.55 17.12 20 13.38 20 10.2C20 5.22 16.2 2 12 2zm0 10c-1.1 0-2-.9-2-2s.9-2 2-2s2 .9 2 2s-.9 2-2 2z"/>
+    </svg>
+  )
+}
+
+export function CalendarIcon ({ size = 32, color = 'currentColor', ...props }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>
+      <path fill={color} d="M17 2c-.55 0-1 .45-1 1v1H8V3c0-.55-.45-1-1-1s-1 .45-1 1v1H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-1V3c0-.55-.45-1-1-1zm2 18H5V10h14v10zm-8-7c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1zm-4 0c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1zm8 0c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1zm-4 4c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1zm-4 0c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1zm8 0c0-.55.45-1 1-1s1 .45 1 1s-.45 1-1 1s-1-.45-1-1z"/>
+    </svg>
+  )
+}
+
+export function TraceIcon ({ size = 32, color = 'currentColor', ...props }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>
+      <path fill={color} d="M15 20c0 .55-.45 1-1 1s-1-.45-1-1v-3c-.73-2.58-3.07-3.47-5.17-3l.88.88a.996.996 0 1 1-1.41 1.41L4.71 13.7a.996.996 0 0 1 0-1.41L7.3 9.7a.996.996 0 1 1 1.41 1.41l-.88.89c1.51-.33 3.73.08 5.17 1.36V6.83l-.88.88a.996.996 0 1 1-1.41-1.41l2.59-2.59a.996.996 0 0 1 1.41 0L17.3 6.3a.996.996 0 1 1-1.41 1.41L15 6.83V20z"/>
     </svg>
   )
 }
