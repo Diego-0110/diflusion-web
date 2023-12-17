@@ -28,6 +28,11 @@ export default function Home () {
         setMapData(nextMapData)
         setLoading({ ...loading, isLoading: false })
       })
+    fetch('/api/regions')
+      .then(async response => {
+        const res = await response.json()
+        console.log(res)
+      })
   }, [])
   const onUpdateSelection = (dataId) => {
     // setMapConf({ ...mapConf, dataId })
