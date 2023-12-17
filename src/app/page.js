@@ -6,6 +6,7 @@ import MapSelectionPanel from '@/components/MapSelectionPanel'
 import { DATA_ID, MAP_DATA_ID } from '@/constants/mapData'
 
 import { useEffect, useState } from 'react'
+import { featureCollection } from '@turf/helpers'
 
 export default function Home () {
   const [mapConf, setMapConf] = useState({
@@ -15,23 +16,41 @@ export default function Home () {
 
   // TODO: correct mapData type (FeatureCollection)
   const [mapData, setMapData] = useState([{}, {}, {}])
+  const [regions, setRegions] = useState()
   const [mainData, setMainData] = useState(MAP_DATA_ID.riskLevels)
   const [selectedDataInfo, setSelectedDataInfo] = useState([])
   const [loading, setLoading] = useState({ isLoading: true, msg: 'Loading Risk Levels...' })
   useEffect(() => {
     // TODO: request RiskLevels by Id
-    fetch('/data/testRiskLevels.geojson')
-      .then(async response => {
-        const nextMapData = [...mapData]
-        nextMapData[MAP_DATA_ID.riskLevels] = await response.json()
-        // console.log(nextMapData[MAP_DATA_ID.riskLevels])
-        setMapData(nextMapData)
-        setLoading({ ...loading, isLoading: false })
-      })
+    // fetch('/data/testRiskLevels.geojson')
+    //   .then(async response => {
+    //     const nextMapData = [...mapData]
+    //     nextMapData[MAP_DATA_ID.riskLevels] = await response.json()
+    //     // console.log(nextMapData[MAP_DATA_ID.riskLevels])
+    //     setMapData(nextMapData)
+    //     setLoading({ ...loading, isLoading: false })
+    //   })
     fetch('/api/regions')
       .then(async response => {
         const res = await response.json()
-        console.log(res)
+        setRegions(res.regions)
+        fetch('/api/riskLevels')
+          .then(async response => {
+            const risks = (await response.json()).riskLevels.risks
+            const featureList = res.regions.map((region) => {
+              const riskLevel = risks.find((risk) =>
+                risk.regionId === region.properties.regionId)
+              return {
+                ...region,
+                properties: { ...region.properties, level: riskLevel.level }
+              }
+            })
+            const collection = featureCollection(featureList)
+            console.log(collection)
+            const nextMapData = [...mapData]
+            nextMapData[MAP_DATA_ID.riskLevels] = collection
+            setMapData(nextMapData)
+          })
       })
   }, [])
   const onUpdateSelection = (dataId) => {
