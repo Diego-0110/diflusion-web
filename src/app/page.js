@@ -61,12 +61,20 @@ export default function Home () {
   const onSelectFromMap = (evt) => {
     const feature = evt.features[0]
     if (feature) {
-      console.log(feature.geometry)
+      console.log(feature)
       setSelectedDataInfo([{
         type: feature.layer.source, // TODO: translate to map data id
         ...feature.properties
       }])
     }
+  }
+  const onMapDataUpdate = (updates) => {
+    const nextMapData = [...mapData]
+    for (const update of updates) {
+      nextMapData[update.id] = update.data
+    }
+    console.log(nextMapData)
+    setMapData(() => nextMapData)
   }
   return (
     <main className="min-h-screen p-3 pt-16 bg-sky-200">
@@ -75,7 +83,8 @@ export default function Home () {
         <MapMessage show={loading.isLoading} >{loading.msg}</MapMessage>
       </div>
       <div className="relative z-10 w-full sm:max-w-sm">
-        <MapDataDetails selectedDataInfo={selectedDataInfo} />
+        <MapDataDetails selectedDataInfo={selectedDataInfo}
+          onMapDataUpdate={onMapDataUpdate} />
       </div>
       <MapComponent className="absolute top-0 left-0 w-full h-screen"
         conf={mapConf} mapData={mapData} onSelectFromMap={onSelectFromMap} />

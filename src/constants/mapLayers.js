@@ -99,3 +99,24 @@ export const riskLevelsLineLayer = {
     'line-offset': 0
   }
 }
+
+export const riskRoutesLineLayer = {
+  id: 'risk-route-line',
+  type: 'line',
+  paint: {
+    'line-color': '#fff',
+    'line-width': 2,
+    'line-offset': 0
+  }
+}
+
+export const outbreakCircleLayer = {
+  id: 'outbreak-circle',
+  type: 'circle',
+  paint: {
+    'circle-color': '#000',
+    'circle-radius': 10,
+    'circle-stroke-color': '#555',
+    'circle-stroke-width': 2
+  }
+}

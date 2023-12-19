@@ -1,12 +1,58 @@
+import { MAP_DATA_ID } from '@/constants/mapData'
 import CircularGauge from './CircularGuage'
 import Property from './Property'
 import { CalendarIcon, LocationIcon, TraceIcon } from './icons'
 
-export default function MapDataDetails ({ selectedDataInfo }) {
+import { featureCollection } from '@turf/helpers'
+
+export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
   if (selectedDataInfo.length < 1) {
     return null
   }
   const info = selectedDataInfo[selectedDataInfo.length - 1]
+  const handleClick = () => {
+    fetch(`/api/riskRoutes?region=${info.regionId}`)
+      .then(async response => {
+        const riskRoutes = (await response.json()).riskRoutes
+        console.log(riskRoutes)
+        const migrationIds = riskRoutes.map(riskRoute => riskRoute.migrationId).join(',')
+        fetch(`/api/migrationRoutes?region=${info.regionId}&ids=${migrationIds}`)
+          .then(async response => {
+            const migrationRoutes = (await response.json()).migrationRoutes
+            console.log(migrationRoutes)
+            const riskRoutesFeatures = migrationRoutes.map(migrationRoute => {
+              const riskRoute = riskRoutes.find(riskRoute =>
+                riskRoute.migrationId === migrationRoute.properties.id)
+              return {
+                ...migrationRoute,
+                properties: {
+                  ...migrationRoute.properties,
+                  ...riskRoute
+                }
+              }
+            })
+            const collection = featureCollection(riskRoutesFeatures)
+            console.log(collection)
+            fetch('/api/outbreaks')
+              .then(async response => {
+                const outbreaks = (await response.json()).outbreaks
+                console.log(outbreaks)
+                const outbreaksCollection = featureCollection(outbreaks[0].outbreaks)
+                console.log(collection)
+                onMapDataUpdate([
+                  {
+                    id: MAP_DATA_ID.outbreaks,
+                    data: outbreaksCollection
+                  },
+                  {
+                    id: MAP_DATA_ID.riskRoutes,
+                    data: collection
+                  }
+                ])
+              })
+          })
+      })
+  }
   return (
     <article className="bg-surface rounded-xl w-full px-3 py-6">
       <header className="mb-4">
@@ -32,7 +78,7 @@ export default function MapDataDetails ({ selectedDataInfo }) {
         </div>
         <div className="flex justify-center">
           <button className="px-3 py-1 rounded-lg bg-primary text-on-primary"
-            type="button">
+            type="button" onClick={handleClick}>
             <TraceIcon size={16} className="inline" />
             &nbsp;Show Trace
           </button>
