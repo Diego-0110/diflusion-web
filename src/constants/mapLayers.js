@@ -103,6 +103,10 @@ export const riskLevelsLineLayer = {
 export const riskRoutesLineLayer = {
   id: 'risk-route-line',
   type: 'line',
+  layout: {
+    'line-cap': 'round',
+    'line-join': 'round'
+  },
   paint: {
     'line-color': '#fff',
     'line-width': 2,
@@ -114,9 +118,9 @@ export const outbreakCircleLayer = {
   id: 'outbreak-circle',
   type: 'circle',
   paint: {
-    'circle-color': '#000',
+    'circle-color': '#e35936',
     'circle-radius': 10,
-    'circle-stroke-color': '#555',
+    'circle-stroke-color': '#fff',
     'circle-stroke-width': 2
   }
 }

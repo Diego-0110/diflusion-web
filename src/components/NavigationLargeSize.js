@@ -2,17 +2,17 @@ import Link from 'next/link'
 
 export default function NavigationLargeSize ({ currentPage, pages }) {
   return (
-    <div className="flex items-center gap-6 p-2 bg-surface rounded-full w-fit">
-      <Link className="flex items-center self-start gap-2" href="/">
-        <span className="w-7 h-7 bg-violet-500 rounded-full"></span>
-        <span className="font-museo-moderno text-xl font-bold">DiFLUsion</span>
+    <div className="flex items-center gap-9 h-12 px-6 bg-surface rounded-br-xl w-fit">
+      <Link className="flex items-center gap-2" href="/">
+        <span className="w-7 h-7 bg-primary rounded-full"></span>
+        <span className="font-museo-moderno text-lg font-bold">DiFLUsion</span>
       </Link>
-      <ul className="flex max-sm:flex-col items-center gap-6 px-5 text-lg font-medium text-on-surface-variant">
+      <ul className="flex max-sm:flex-col items-center gap-6 h-full text-base font-semibold text-on-surface-variant">
         {pages.map(({ route, text, icon }) => {
           if (route === currentPage) {
             return (
               <li className="relative text-on-surface" key={route}>
-                <Link className="flex gap-2 px-1 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
+                <Link className="flex gap-2 px-1"
                   href={route}>
                   {icon}{text}
                 </Link>

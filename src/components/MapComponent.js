@@ -25,7 +25,7 @@ export default function MapComponent ({ conf, mapData, onSelectFromMap, ...props
         interactiveLayerIds={[riskLevelsFillLayer.id]}
         onClick={onSelectFromMap}
       >
-        <NavigationControl position="top-right" />
+        <NavigationControl position="bottom-right" />
         <ScaleControl />
         {/* <Source id="alarms" type="geojson" data={dataGeoJSON} generateId
           cluster={true} clusterMaxZoom={14} clusterRadius={30}>

@@ -31,9 +31,11 @@ export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
                 }
               }
             })
+            const outbreaksStr = riskRoutes.map(riskRoute =>
+              `${riskRoute.outbreakDate}+${riskRoute.outbreakId}`).join(',')
             const collection = featureCollection(riskRoutesFeatures)
             console.log(collection)
-            fetch('/api/outbreaks')
+            fetch(`/api/outbreaks?ids=${outbreaksStr}`)
               .then(async response => {
                 const outbreaks = (await response.json()).outbreaks
                 console.log(outbreaks)
@@ -54,7 +56,7 @@ export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
       })
   }
   return (
-    <article className="bg-surface rounded-xl w-full px-3 py-6">
+    <article className="bg-surface sm:rounded-r-xl w-full px-3 py-6">
       <header className="mb-4">
         <div className="flex justify-center gap-10 mb-2">
           <CircularGauge value={info.level} />

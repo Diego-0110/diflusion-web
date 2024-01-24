@@ -16,10 +16,10 @@ export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, main
     }
   }
   return (
-    <section className="flex flex-col items-start gap-4 w-fit py-2 pl-4 pr-2 rounded-[1.25em] text-on-primary font-medium bg-primary">
+    <section className="flex items-start gap-2 w-fit py-2 pl-3 pr-2 rounded-br-xl text-on-primary text-sm bg-primary">
       <header className="flex items-center gap-3">
         <div className="relative text-on-primary">
-          <button className="flex items-center px-2 gap-2 after:absolute after:-bottom-0.5 after:left-0 after:w-full after:h-0.5 after:bg-current"
+          <button className="flex items-center px-2 gap-2"
             type="button" onClick={() => handleClick(mainData)}>
             {mainDataDetails.icon} {mainDataDetails.name}
           </button>
@@ -31,7 +31,7 @@ export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, main
           }
         </button>
       </header>
-      {!isHidden && <ul className="flex flex-col gap-4 text-on-primary-variant">
+      {!isHidden && <ul className="absolute top-[calc(100%+4px)] left-0 flex flex-col gap-4 w-full py-2 px-3 rounded-r-lg text-on-surface bg-surface">
         {MAP_DATA_DETAILS.map(dataDetails => {
           if (dataDetails.id === mainData) {
             return null

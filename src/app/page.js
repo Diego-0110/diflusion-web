@@ -77,12 +77,12 @@ export default function Home () {
     setMapData(() => nextMapData)
   }
   return (
-    <main className="min-h-screen p-3 pt-16 bg-sky-200">
+    <main className="min-h-screen pt-12">
       <div className="relative z-30 flex items-start gap-2 w-fit mb-2">
         <MapSelectionPanel conf={mapConf} mainData={mainData} onUpdateSelection={onUpdateSelection} />
         <MapMessage show={loading.isLoading} >{loading.msg}</MapMessage>
       </div>
-      <div className="relative z-10 w-full sm:max-w-sm">
+      <div className="relative z-10 w-full sm:max-w-sm max-sm:absolute max-sm:bottom-0 max-sm:left-0">
         <MapDataDetails selectedDataInfo={selectedDataInfo}
           onMapDataUpdate={onMapDataUpdate} />
       </div>

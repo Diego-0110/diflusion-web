@@ -6,7 +6,7 @@ function formatIds (idsStr) {
   }
   const ids = idsStr.split(',')
   return ids.map(id => {
-    const props = id.split('+')
+    const props = id.split(' ')
     return {
       date: parseInt(props[0]),
       id: parseInt(props[1])
@@ -42,6 +42,5 @@ export async function GET (request) {
       }
     }
   ]).toArray()
-  // console.log(riskRoutes)
   return Response.json({ outbreaks })
 }
