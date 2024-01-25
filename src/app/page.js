@@ -16,7 +16,7 @@ export default function Home () {
 
   // TODO: correct mapData type (FeatureCollection)
   const [mapData, setMapData] = useState([{}, {}, {}])
-  const [regions, setRegions] = useState()
+  // const [regions, setRegions] = useState()
   const [mainData, setMainData] = useState(MAP_DATA_ID.riskLevels)
   const [selectedDataInfo, setSelectedDataInfo] = useState([])
   const [loading, setLoading] = useState({ isLoading: true, msg: 'Loading Risk Levels...' })
@@ -33,7 +33,7 @@ export default function Home () {
     fetch('/api/regions')
       .then(async response => {
         const res = await response.json()
-        setRegions(res.regions)
+        // setRegions(res.regions)
         fetch('/api/riskLevels')
           .then(async response => {
             const risks = (await response.json()).riskLevels.risks

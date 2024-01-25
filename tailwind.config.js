@@ -12,8 +12,10 @@ module.exports = {
         'on-primary': 'rgb(var(--on-primary) / <alpha-value>)',
         'on-primary-variant': 'rgb(var(--on-primary-variant) / <alpha-value>)',
         surface: 'rgb(var(--surface) / <alpha-value>)',
+        'surface-container': 'rgb(var(--surface-container) / <alpha-value>)',
         'on-surface': 'rgb(var(--on-surface) / <alpha-value>)',
-        'on-surface-variant': 'rgb(var(--on-surface-variant) / <alpha-value>)'
+        'on-surface-variant': 'rgb(var(--on-surface-variant) / <alpha-value>)',
+        outline: 'rgb(var(--outline) / <alpha-value>)'
       },
       fontFamily: {
         outfit: ['var(--font-outfit)'],

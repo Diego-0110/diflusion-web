@@ -8,7 +8,7 @@ export default function MapDataOptions () {
     handleClick
   } = useToggle(false)
   return (
-    <div className="relative">
+    <div className="relative" onBlur={() => console.log('Op: leaving')}>
       <button className="flex items-center justify-center w-10 h-10 rounded-full text-on-primary bg-primary"
         type="button" onClick={handleClick}>
         <SettingsPanoramaIcon size={24} />

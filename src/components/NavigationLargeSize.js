@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function NavigationLargeSize ({ currentPage, pages }) {
   return (
-    <div className="flex items-center gap-9 h-12 px-6 bg-surface rounded-br-xl w-fit">
+    <div className="flex items-center gap-9 w-fit h-12 px-6 bg-surface rounded-br-xl border-r border-b border-outline shadow-md">
       <Link className="flex items-center gap-2" href="/">
         <span className="w-7 h-7 bg-primary rounded-full"></span>
         <span className="font-museo-moderno text-lg font-bold">DiFLUsion</span>

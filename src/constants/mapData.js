@@ -35,7 +35,7 @@ export const MAP_DATA_DETAILS = [
   {
     id: MAP_DATA_ID.outbreaks,
     name: 'Outbreaks',
-    icon: <MaskIcon size={24} />
+    icon: <MaskIcon size={20} />
   }
 ]
 

@@ -56,7 +56,7 @@ export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
       })
   }
   return (
-    <article className="bg-surface sm:rounded-r-xl w-full px-3 py-6">
+    <article className="bg-surface sm:rounded-r-xl w-full px-3 py-6 sm:border-y sm:border-r max-sm:border-t border-outline shadow-md">
       <header className="mb-4">
         <div className="flex justify-center gap-10 mb-2">
           <CircularGauge value={info.level} />
