@@ -4,6 +4,7 @@ import Property from './Property'
 import { CalendarIcon, LocationIcon, TraceIcon } from './icons'
 
 import { featureCollection } from '@turf/helpers'
+import makeUrlWithParams from '@/utils/data/makeUrlWithParams'
 
 export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
   if (selectedDataInfo.length < 1) {
@@ -13,7 +14,7 @@ export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
   const handleClick = () => {
     fetch(`/api/riskRoutes?region=${info.regionId}`)
       .then(async response => {
-        const riskRoutes = (await response.json()).riskRoutes
+        const riskRoutes = (await response.json()).data
         console.log(riskRoutes)
         const migrationIds = riskRoutes.map(riskRoute => riskRoute.migrationId).join(',')
         fetch(`/api/migrationRoutes?region=${info.regionId}&ids=${migrationIds}`)
@@ -31,15 +32,20 @@ export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
                 }
               }
             })
+            const outbreaksUrl = makeUrlWithParams('/api/outbreaks', {
+              ids: riskRoutes.map(riskRoute =>
+                ({ date: riskRoute.outbreakDate, id: riskRoute.outbreakId }))
+            })
             const outbreaksStr = riskRoutes.map(riskRoute =>
               `${riskRoute.outbreakDate}+${riskRoute.outbreakId}`).join(',')
             const collection = featureCollection(riskRoutesFeatures)
             console.log(collection)
-            fetch(`/api/outbreaks?ids=${outbreaksStr}`)
+            fetch(outbreaksUrl)
               .then(async response => {
-                const outbreaks = (await response.json()).outbreaks
+                const outbreaks = (await response.json()).data
                 console.log(outbreaks)
-                const outbreaksCollection = featureCollection(outbreaks[0].outbreaks)
+                const allOutbreaks = outbreaks.reduce((acc, currVal) => [...acc, ...currVal.outbreaks], [])
+                const outbreaksCollection = featureCollection(allOutbreaks)
                 console.log(collection)
                 onMapDataUpdate([
                   {

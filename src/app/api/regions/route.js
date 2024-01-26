@@ -5,5 +5,5 @@ export async function GET () {
   const db = client.db(process.env.DB_NAME)
   const collection = db.collection('regions')
   const regions = await collection.find({}).toArray()
-  return Response.json({ regions })
+  return Response.json({ data: regions })
 }

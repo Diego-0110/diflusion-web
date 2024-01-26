@@ -1,14 +1,16 @@
+import parseUrlWithParams from '@/utils/data/parseUrlWithParams'
 import clientPromise from '@/utils/lib/mongodb'
 
 export async function GET (request) {
-  const { searchParams } = new URL(request.url)
-  const date = searchParams.get('date') || 1701043200000
-  const region = searchParams.get('region') || 'SP01059'
+  const { search } = new URL(request.url)
+  const params = parseUrlWithParams(search)
+  const date = params.date || 1701043200000
+  const region = params.region || 'SP01059'
   console.log(region)
   const client = await clientPromise
   const db = client.db(process.env.DB_NAME)
-  const collection = db.collection('riskRoutes')
-  const riskRoutes = await collection.aggregate([
+  const rrCollection = db.collection('riskRoutes')
+  const riskRoutes = await rrCollection.aggregate([
     {
       $match: { date }
     },
@@ -25,5 +27,5 @@ export async function GET (request) {
     }
   ]).toArray()
   // console.log(riskRoutes)
-  return Response.json({ riskRoutes: riskRoutes[0].riskRoutes })
+  return Response.json({ data: riskRoutes[0].riskRoutes })
 }

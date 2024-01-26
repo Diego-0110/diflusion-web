@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.17.19",
     "@turf/helpers": "^6.5.0",
     "maplibre-gl": "^3.5.1",
     "mongodb": "^6.3.0",

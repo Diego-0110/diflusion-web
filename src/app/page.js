@@ -7,6 +7,8 @@ import { DATA_ID, MAP_DATA_ID } from '@/constants/mapData'
 
 import { useEffect, useState } from 'react'
 import { featureCollection } from '@turf/helpers'
+import getRiskLevels from '@/utils/data/getRiskLevels'
+import getOutbreaks from '@/utils/data/getOutbreaks'
 
 export default function Home () {
   const [mapConf, setMapConf] = useState({
@@ -30,14 +32,15 @@ export default function Home () {
     //     setMapData(nextMapData)
     //     setLoading({ ...loading, isLoading: false })
     //   })
+    getRiskLevels({}).then((res) => { console.log('AAA'); console.log(res) })
     fetch('/api/regions')
       .then(async response => {
-        const res = await response.json()
+        const res = (await response.json()).data
         // setRegions(res.regions)
         fetch('/api/riskLevels')
           .then(async response => {
-            const risks = (await response.json()).riskLevels.risks
-            const featureList = res.regions.map((region) => {
+            const risks = (await response.json()).data
+            const featureList = res.map((region) => {
               const riskLevel = risks.find((risk) =>
                 risk.regionId === region.properties.regionId)
               return {
