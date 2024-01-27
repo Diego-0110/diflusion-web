@@ -3,63 +3,76 @@ import CircularGauge from './CircularGuage'
 import Property from './Property'
 import { CalendarIcon, LocationIcon, TraceIcon } from './icons'
 
-import { featureCollection } from '@turf/helpers'
-import makeUrlWithParams from '@/utils/data/makeUrlWithParams'
+import traceRiskLevels from '@/utils/data/traceRiskLevel'
+import { useMapStore } from '@/utils/stores/useMapStore'
 
-export default function MapDataDetails ({ selectedDataInfo, onMapDataUpdate }) {
+export default function MapDataDetails ({ onMapDataUpdate }) {
+  const selectedDataInfo = useMapStore((state) => state.selectedDataInfo)
+  const traceSelectedData = useMapStore((state) => state.traceSelectedData)
   if (selectedDataInfo.length < 1) {
     return null
   }
-  const info = selectedDataInfo[selectedDataInfo.length - 1]
+  const info = selectedDataInfo.slice(-1)[0].info
   const handleClick = () => {
-    fetch(`/api/riskRoutes?region=${info.regionId}`)
-      .then(async response => {
-        const riskRoutes = (await response.json()).data
-        console.log(riskRoutes)
-        const migrationIds = riskRoutes.map(riskRoute => riskRoute.migrationId).join(',')
-        fetch(`/api/migrationRoutes?region=${info.regionId}&ids=${migrationIds}`)
-          .then(async response => {
-            const migrationRoutes = (await response.json()).migrationRoutes
-            console.log(migrationRoutes)
-            const riskRoutesFeatures = migrationRoutes.map(migrationRoute => {
-              const riskRoute = riskRoutes.find(riskRoute =>
-                riskRoute.migrationId === migrationRoute.properties.id)
-              return {
-                ...migrationRoute,
-                properties: {
-                  ...migrationRoute.properties,
-                  ...riskRoute
-                }
-              }
-            })
-            const outbreaksUrl = makeUrlWithParams('/api/outbreaks', {
-              ids: riskRoutes.map(riskRoute =>
-                ({ date: riskRoute.outbreakDate, id: riskRoute.outbreakId }))
-            })
-            const outbreaksStr = riskRoutes.map(riskRoute =>
-              `${riskRoute.outbreakDate}+${riskRoute.outbreakId}`).join(',')
-            const collection = featureCollection(riskRoutesFeatures)
-            console.log(collection)
-            fetch(outbreaksUrl)
-              .then(async response => {
-                const outbreaks = (await response.json()).data
-                console.log(outbreaks)
-                const allOutbreaks = outbreaks.reduce((acc, currVal) => [...acc, ...currVal.outbreaks], [])
-                const outbreaksCollection = featureCollection(allOutbreaks)
-                console.log(collection)
-                onMapDataUpdate([
-                  {
-                    id: MAP_DATA_ID.outbreaks,
-                    data: outbreaksCollection
-                  },
-                  {
-                    id: MAP_DATA_ID.riskRoutes,
-                    data: collection
-                  }
-                ])
-              })
-          })
-      })
+    console.log('PreFetching:')
+    traceSelectedData()
+    // traceRiskLevels({ regionId: info.regionId }).then(
+    //   ({ outbreaks, riskRoutes }) => {
+    //     onMapDataUpdate([
+    //       {
+    //         id: MAP_DATA_ID.outbreaks,
+    //         data: outbreaks
+    //       },
+    //       {
+    //         id: MAP_DATA_ID.riskRoutes,
+    //         data: riskRoutes
+    //       }
+    //     ])
+    //   })
+    // fetch(`/api/riskRoutes?region=${info.regionId}`)
+    //   .then(async response => {
+    //     const riskRoutes = (await response.json()).data
+    //     console.log('RiskRoutes with MigrationRoute:')
+    //     console.log(riskRoutes)
+    //     const migrationIds = riskRoutes.map(riskRoute => riskRoute.migrationId).join(',')
+    //     fetch(`/api/migrationRoutes?region=${info.regionId}&ids=${migrationIds}`)
+    //       .then(async response => {
+    //         const migrationRoutes = (await response.json()).migrationRoutes
+    //         console.log(migrationRoutes)
+    //         const riskRoutesFeatures = migrationRoutes.map(migrationRoute => {
+    //           const riskRoute = riskRoutes.find(riskRoute =>
+    //             riskRoute.migrationId === migrationRoute.properties.id)
+    //           return {
+    //             ...migrationRoute,
+    //             properties: {
+    //               ...migrationRoute.properties,
+    //               ...riskRoute
+    //             }
+    //           }
+    //         })
+    //         const outbreaksUrl = makeUrlWithParams('/api/outbreaks', {
+    //           ids: riskRoutes.map(riskRoute =>
+    //             ({ date: riskRoute.outbreakDate, id: riskRoute.outbreakId }))
+    //         })
+    //         const riskRoutesCollection = featureCollection(riskRoutesFeatures)
+    //         fetch(outbreaksUrl)
+    //           .then(async response => {
+    //             const outbreaks = (await response.json()).data
+    //             const allOutbreaks = outbreaks.reduce((acc, currVal) => [...acc, ...currVal.outbreaks], [])
+    //             const outbreaksCollection = featureCollection(allOutbreaks)
+    //             onMapDataUpdate([
+    //               {
+    //                 id: MAP_DATA_ID.outbreaks,
+    //                 data: outbreaksCollection
+    //               },
+    //               {
+    //                 id: MAP_DATA_ID.riskRoutes,
+    //                 data: riskRoutesCollection
+    //               }
+    //             ])
+    //           })
+    //       })
+    //   })
   }
   return (
     <article className="bg-surface sm:rounded-r-xl w-full px-3 py-6 sm:border-y sm:border-r max-sm:border-t border-outline shadow-md">

@@ -39,13 +39,19 @@ export const MAP_DATA_DETAILS = [
   }
 ]
 
-export const DATA_ID = {
+export const SOURCE_ID_TO_DATA_ID = {
+  'risk-levels': 0,
+  outbreaks: 1,
+  'risk-routes': 2
+}
+
+export const DATA_ID = { // TODO remove: not used
   alarms: 'alarms',
   outbreaks: 'outbreaks',
   migrations: 'migrations'
 }
 
-export const DATA_MAP = {
+export const DATA_MAP = { // TODO remove: not used
   [DATA_ID.alarms]: {
     text: 'Risk Levels',
     icon: <WarningIcon size={20} />,

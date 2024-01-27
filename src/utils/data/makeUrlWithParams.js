@@ -14,8 +14,11 @@ export default function makeUrlWithParams (url, params) {
   }
   const formattedParams = {}
   for (const param in params) {
-    formattedParams[param] = stringifyParamValue(params[param])
+    if (params[param] !== undefined && params[param] !== null) {
+      console.log(param)
+      formattedParams[param] = stringifyParamValue(params[param])
+    }
   }
-  const stringParams = new URLSearchParams(params).toString()
+  const stringParams = new URLSearchParams(formattedParams).toString()
   return `${url}?${stringParams}`
 }

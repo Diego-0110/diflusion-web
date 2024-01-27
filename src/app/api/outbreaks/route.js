@@ -7,9 +7,11 @@ export async function GET (request) {
   const client = await clientPromise
   const db = client.db(process.env.DB_NAME)
   const collection = db.collection('outbreaks')
-  if (params.date) {
+  if (!params.ids) {
+    // TODO date not null
+    params.date = 1700179200000
     return Response.json({
-      data: await collection.findOne({ date: params.date }).outbreaks
+      data: (await collection.findOne({ date: params.date })).outbreaks
     })
   }
   params.ids = params.ids || [

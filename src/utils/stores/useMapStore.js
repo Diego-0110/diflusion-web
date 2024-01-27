@@ -4,78 +4,117 @@ import getRiskLevels from '../data/getRiskLevels'
 import getOutbreaks from '../data/getOutbreaks'
 import traceRiskLevels from '../data/traceRiskLevel'
 import traceOutbreaks from '../data/traceOutbreaks'
+import { featureCollection } from '@turf/helpers'
 
-export const useMapStore = create((set, get) => ({
-  showedData: [{}, {}, {}],
+const initialState = {
+  showedData: [featureCollection([]), featureCollection([]), featureCollection([])],
   mapMode: MAP_DATA_ID.riskLevels,
   date: [],
   selectedDataInfo: [],
-  traceInfo: null,
+  traceInfo: null
+}
+
+export const useMapStore = create((set, get) => ({
+  ...initialState,
   setSelectedDataInfo: ({ dataId, info }) => {
     // set selectedDataInfo
     // reset o add based on traceInfo (splice)
-    if (get().traceInfo) {
+    // TODO clean showedData
+    const currSelectedDataId = get().selectedDataInfo.slice(-1)[0]?.dataId
+    if (currSelectedDataId !== undefined && get().traceInfo &&
+      currSelectedDataId !== dataId) {
       set((state) => ({
         selectedDataInfo: state.selectedDataInfo.splice(1, 1,
           { type: dataId, info })
       }))
+    } else {
+      set(() => ({
+        selectedDataInfo: [{ type: dataId, info }]
+      }))
     }
-    set(() => ({
-      selectedDataInfo: [{ type: dataId, info }]
-    }))
     // set open MapDataDetails
   },
   setMapMode: (modeId) => {
     set(() => ({ mapMode: modeId }))
-    get().updateMap({ modeId, date: get().date })
+    get().loadMap({ modeId, date: get().date })
   },
   setDate: (date) => {
     set(() => ({ date }))
-    get().updateMap({ modeId: get().modeId, date })
+    get().loadMap({ modeId: get().modeId, date })
   },
   setPreviousSelectedDataInfo: () => {
     // set selectedDataInfo pop
     set((state) => ({ selectedDataInfo: state.selectedDataInfo.slice(0, -1) }))
   },
-  updateMap: ({ modeId, date }) => {
+  loadMap: async ({ modeId = get().mapMode, date = null }) => {
+    // TODO date not null
     // Switch base on modeId
     //    fetching using TanStack Query
     //      fetch regions y riskLevels
     //      fetch outbreaks
     // set showedData
-    const newShowedData = [{}, {}, {}]
+    const newShowedData = [...initialState.showedData]
     switch (modeId) {
       case MAP_DATA_ID.riskLevels:
-        newShowedData[modeId] = getRiskLevels({ date })
+        newShowedData[modeId] = await getRiskLevels({ date })
         break
       case MAP_DATA_ID.outbreaks:
-        newShowedData[modeId] = getOutbreaks({ date })
+        newShowedData[modeId] = await getOutbreaks({ date })
         break
       default:
         break
     }
-    set(() => ({ showedData: newShowedData }))
+    set(() => ({
+      showedData: newShowedData,
+      selectedDataInfo: initialState.selectedDataInfo,
+      traceInfo: initialState.traceInfo
+    }))
   },
-  traceSelectedData: ({ dataType, dataId, date }) => {
+  updateMap: (updates) => {
+    set((state) => {
+      const nextShowedData = [...state.showedData]
+      for (const update of updates) {
+        nextShowedData[update.id] = update.data
+      }
+      return {
+        showedData: nextShowedData
+      }
+    })
+  },
+  traceSelectedData: async () => {
     // There's no need to pass modeId value, it can be got trough selectedDataInfo
     // set selectedDataInfo (reset)
     // Switch base on modeId in selectedDataInfo
     //    fetching using TanStack Query
     //      fetch riskRoutes -> migrationRoutes -> outbreaks
     //      fetch riskRoutes -> migrationRoutes -> riskLevels
+    if (get().selectedDataInfo.length < 1) {
+      return
+    }
+    const data = get().selectedDataInfo.slice(-1)[0]
     let newTraceInfo
-    // reset array
-    set((state) => ({ selectedDataInfo: state.selectedDataInfo.slice(-1) }))
-    switch (dataType) {
+    switch (data.type) {
       case MAP_DATA_ID.riskLevels:
-        newTraceInfo = traceRiskLevels({ dataId, date })
+        newTraceInfo = await traceRiskLevels({ regionId: data.info.regionId })
+        get().updateMap([
+          {
+            id: MAP_DATA_ID.outbreaks,
+            data: newTraceInfo.outbreaks
+          },
+          {
+            id: MAP_DATA_ID.riskRoutes,
+            data: newTraceInfo.riskRoutes
+          }
+        ])
         break
       case MAP_DATA_ID.outbreaks:
-        newTraceInfo = traceOutbreaks({ dataId, date })
+        newTraceInfo = traceOutbreaks({ outbreakId: data.info.outbreakId })
         break
       default:
         break
     }
+    // reset array
+    set((state) => ({ selectedDataInfo: state.selectedDataInfo.slice(-1) }))
     set(() => ({ traceInfo: newTraceInfo }))
   }
 }))
