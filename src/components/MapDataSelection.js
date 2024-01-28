@@ -2,27 +2,23 @@
 import useToggle from '@/utils/hooks/useToggle'
 import { RightArrowIcon } from './icons'
 
-import { DATA_ID, MAP_DATA_DETAILS } from '@/constants/mapData'
+import { MAP_DATA_DETAILS } from '@/constants/mapData'
 import { useMapStore } from '@/utils/stores/useMapStore'
-import { useEffect } from 'react'
 
-export default function MapDataSelection ({ currentDataId = DATA_ID.alarms, mainData, onUpdateSelection = (id) => { console.log(id) } }) {
+export default function MapDataSelection () {
   const {
     isToggled: isHidden, handleClick: handleToggleClick
   } = useToggle(true)
   const setMapMode = useMapStore((state) => state.setMapMode)
   const mapMode = useMapStore((state) => state.mapMode)
-  const mainDataDetails = MAP_DATA_DETAILS[mainData]
+  const mainDataDetails = MAP_DATA_DETAILS[mapMode]
   const handleClick = (dataId) => {
-    onUpdateSelection(dataId)
+    // onUpdateSelection(dataId)
     setMapMode(dataId)
     if (!isHidden) {
       handleToggleClick()
     }
   }
-  useEffect(() => {
-    console.log(mapMode)
-  }, [mapMode])
   return (
     <section className="relative">
       <button type="button" className="relative flex justify-between w-44 py-2 pl-3 pr-2 rounded-br-xl text-on-primary text-sm bg-primary shadow-md"

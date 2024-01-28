@@ -5,11 +5,13 @@ import getOutbreaks from '../data/getOutbreaks'
 import traceRiskLevels from '../data/traceRiskLevel'
 import traceOutbreaks from '../data/traceOutbreaks'
 import { featureCollection } from '@turf/helpers'
+import toast from 'react-hot-toast'
 
 const initialState = {
   showedData: [featureCollection([]), featureCollection([]), featureCollection([])],
   mapMode: MAP_DATA_ID.riskLevels,
-  date: [],
+  date: 1701043200000,
+  // TODO selected dates and current date
   selectedDataInfo: [],
   traceInfo: null
 }
@@ -36,30 +38,44 @@ export const useMapStore = create((set, get) => ({
   },
   setMapMode: (modeId) => {
     set(() => ({ mapMode: modeId }))
-    get().loadMap({ modeId, date: get().date })
+    get().loadMap({ modeId })
   },
   setDate: (date) => {
     set(() => ({ date }))
-    get().loadMap({ modeId: get().modeId, date })
+    get().loadMap({ date })
   },
   setPreviousSelectedDataInfo: () => {
     // set selectedDataInfo pop
     set((state) => ({ selectedDataInfo: state.selectedDataInfo.slice(0, -1) }))
   },
-  loadMap: async ({ modeId = get().mapMode, date = null }) => {
+  loadMap: async ({ modeId = get().mapMode, date = get().date }) => {
     // TODO date not null
+    // TODO abort fetch
     // Switch base on modeId
     //    fetching using TanStack Query
     //      fetch regions y riskLevels
     //      fetch outbreaks
     // set showedData
     const newShowedData = [...initialState.showedData]
+    let promise
     switch (modeId) {
       case MAP_DATA_ID.riskLevels:
-        newShowedData[modeId] = await getRiskLevels({ date })
+        promise = getRiskLevels({ date })
+        toast.promise(promise, {
+          loading: 'Loading',
+          success: 'Got the data',
+          error: 'Error when fetching'
+        })
+        newShowedData[modeId] = await promise
         break
       case MAP_DATA_ID.outbreaks:
-        newShowedData[modeId] = await getOutbreaks({ date })
+        promise = getOutbreaks({ date })
+        toast.promise(promise, {
+          loading: 'Loading',
+          success: 'Got the data',
+          error: 'Error when fetching'
+        })
+        newShowedData[modeId] = await promise
         break
       default:
         break
@@ -108,7 +124,7 @@ export const useMapStore = create((set, get) => ({
         ])
         break
       case MAP_DATA_ID.outbreaks:
-        newTraceInfo = traceOutbreaks({ outbreakId: data.info.outbreakId })
+        newTraceInfo = traceOutbreaks({ outbreakId: data.info.id })
         break
       default:
         break

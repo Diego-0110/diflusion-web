@@ -27,7 +27,7 @@ export default function NavigationSmallSize ({ currentPage, pages }) {
         {pages.map(({ route, text, icon }) => {
           if (route === currentPage) {
             return (
-              <li className="relative text-on-surface" key={route}>
+              <li className="text-on-surface" key={route}>
                 <Link className="flex gap-2 px-1"
                   href={route}>
                   {icon}{text}

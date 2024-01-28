@@ -1,11 +1,12 @@
 import MapDataOptions from './MapDataOptions'
 import MapDataSelection from './MapDataSelection'
 
-export default function MapSelectionPanel ({ conf, mainData, onUpdateSelection }) {
+export default function MapSelectionPanel () {
   return (
     <section className="relative z-10 flex items-start gap-2">
-      <MapDataSelection currentDataId={conf.dataId} mainData={mainData} onUpdateSelection={onUpdateSelection} />
-      <MapDataOptions currentDataId={conf.dataId} currentMode={conf.mode} />
+      <MapDataSelection />
+      <MapDataOptions />
+      <input type="date" name="" id="" />
     </section>
   )
 }

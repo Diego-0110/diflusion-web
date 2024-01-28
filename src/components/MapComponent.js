@@ -10,13 +10,12 @@ import { MAP_DATA_ID, SOURCE_ID_TO_DATA_ID } from '@/constants/mapData'
 import { useMapStore } from '@/utils/stores/useMapStore'
 import { useEffect } from 'react'
 
-export default function MapComponent ({ mapData, onSelectFromMap, ...props }) {
+export default function MapComponent ({ ...props }) {
   const showedData = useMapStore((state) => state.showedData)
 
   const setSelectedDataInfo = useMapStore((state) => state.setSelectedDataInfo)
   const selectedDataInfo = useMapStore((state) => state.selectedDataInfo)
   const handleClick = (evt) => {
-    onSelectFromMap(evt)
     const feature = evt.features[0]
     if (feature) {
       setSelectedDataInfo({
@@ -41,7 +40,7 @@ export default function MapComponent ({ mapData, onSelectFromMap, ...props }) {
         mapStyle="https://demotiles.maplibre.org/style.json"
         maplibreLogo
         onLoad={(evt) => { console.log(evt.target.getStyle()) }}
-        interactiveLayerIds={[riskLevelsFillLayer.id]}
+        interactiveLayerIds={[riskLevelsFillLayer.id, outbreakCircleLayer.id]}
         onClick={handleClick}
       >
         <NavigationControl position="bottom-right" />
