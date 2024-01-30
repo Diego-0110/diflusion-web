@@ -4,7 +4,7 @@ import {
   ScaleControl, Source, Layer
 } from 'react-map-gl/maplibre'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { outbreakCircleLayer, riskLevelsFillLayer, riskLevelsLineLayer, riskRoutesLineLayer } from '@/constants/mapLayers'
+import { outbreakCircleLayer, outbreakCircleShadowLayer, riskLevelsFillLayer, riskLevelsLineLayer, riskRoutesLineLayer } from '@/constants/mapLayers'
 
 import { MAP_DATA_ID, SOURCE_ID_TO_DATA_ID } from '@/constants/mapData'
 import { useMapStore } from '@/utils/stores/useMapStore'
@@ -18,9 +18,18 @@ export default function MapComponent ({ ...props }) {
   const handleClick = (evt) => {
     const feature = evt.features[0]
     if (feature) {
+      const info = { ...feature.properties }
+      // TODO move to utilies
+      for (const i in info) {
+        try {
+          info[i] = JSON.parse(info[i])
+        } catch (error) {
+          continue
+        }
+      }
       setSelectedDataInfo({
         dataId: SOURCE_ID_TO_DATA_ID[feature.layer.source], // TODO translate sourceId to dataId
-        info: feature.properties
+        info
       })
     }
   }
@@ -60,9 +69,16 @@ export default function MapComponent ({ ...props }) {
             <Layer beforeId="geolines-label" {...riskLevelsFillLayer} />
             <Layer beforeId="geolines-label" {...riskLevelsLineLayer} />
         </Source>
+        <Source id="outbreaks-s" type="geojson" data={showedData[MAP_DATA_ID.outbreaks]}
+          generateId>
+            {/* <Layer beforeId="geolines-label" {...outbreakCircleLayer} /> */}
+            <Layer beforeId="geolines-label" {...outbreakCircleShadowLayer} />
+            {/* <Layer beforeId="geolines-label" {...riskLevelsLineLayer} /> */}
+        </Source>
         <Source id="outbreaks" type="geojson" data={showedData[MAP_DATA_ID.outbreaks]}
           generateId>
             <Layer beforeId="geolines-label" {...outbreakCircleLayer} />
+            {/* <Layer beforeId="geolines-label" {...outbreakCircleShadowLayer} /> */}
             {/* <Layer beforeId="geolines-label" {...riskLevelsLineLayer} /> */}
         </Source>
         <Source id="risk-routes" type="geojson" data={showedData[MAP_DATA_ID.riskRoutes]}

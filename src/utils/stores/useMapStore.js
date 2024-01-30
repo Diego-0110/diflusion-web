@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 const initialState = {
   showedData: [featureCollection([]), featureCollection([]), featureCollection([])],
   mapMode: MAP_DATA_ID.riskLevels,
-  date: 1701043200000,
+  date: 1704672000000,
   // TODO selected dates and current date
   selectedDataInfo: [],
   traceInfo: null
@@ -111,7 +111,10 @@ export const useMapStore = create((set, get) => ({
     let newTraceInfo
     switch (data.type) {
       case MAP_DATA_ID.riskLevels:
-        newTraceInfo = await traceRiskLevels({ regionId: data.info.regionId })
+        newTraceInfo = await traceRiskLevels({
+          regionId: data.info.id,
+          date: data.info.date
+        })
         get().updateMap([
           {
             id: MAP_DATA_ID.outbreaks,

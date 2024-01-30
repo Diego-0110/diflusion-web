@@ -124,3 +124,15 @@ export const outbreakCircleLayer = {
     'circle-stroke-width': 2
   }
 }
+
+export const outbreakCircleShadowLayer = {
+  id: 'outbreak-circle-shadow',
+  type: 'circle',
+  paint: {
+    'circle-radius': 18,
+    'circle-color': '#000',
+    'circle-blur': 1,
+    'circle-opacity': 0.5
+  },
+  filter: ['in', '$type', 'Point']
+}

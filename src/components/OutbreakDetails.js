@@ -3,6 +3,14 @@ import Property from './Property'
 import { CalendarIcon, FeatherIcon, LocationIcon, MicroBiologyIcon, TraceIcon } from './icons'
 
 export default function OutbreakDetails ({ info, trace }) {
+  const speciesJSX = info.species.map((e) => {
+    if (!e.commonName && !e.scientificName) {
+      return e.type ? `${e.type} Bird` : 'Unknow Bird'
+    }
+    return (
+      `${e.commonName}${e.scientificName ? '/' + e.scientificName : ''} (${e.type})`
+    )
+  })
   return (
     <>
     <header className="mb-4">
@@ -25,9 +33,9 @@ export default function OutbreakDetails ({ info, trace }) {
           icon={<LocationIcon size={24} />}/>
         <Property name="Date" value={info.date || '23 Jan. 24'}
           icon={<CalendarIcon size={24} />}/>
-        <Property name="Serotype" value={info.serotipo}
+        <Property name="Serotype" value={info.serotype}
           icon={<MicroBiologyIcon size={24} />}/>
-        <Property name="Species" value={info.species}
+        <Property name="Species" value={speciesJSX}
           icon={<FeatherIcon size={24} />}/>
       </div>
       <div className="flex justify-center">
@@ -37,9 +45,6 @@ export default function OutbreakDetails ({ info, trace }) {
           &nbsp;Show Trace
         </button>
       </div>
-      <p className="break-words">
-        {JSON.stringify(info)}
-      </p>
     </section>
     </>
   )

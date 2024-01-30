@@ -1,6 +1,6 @@
-import { featureCollection } from '@turf/helpers'
+import { feature, featureCollection } from '@turf/helpers'
 import doFetch from './doFetch'
-import makeUrlWithParams from './makeUrlWithParams'
+import greatCircle from '@turf/great-circle'
 
 export default async function traceRiskLevels ({ regionId, date }) {
   const riskRoutes = await doFetch({
@@ -8,22 +8,20 @@ export default async function traceRiskLevels ({ regionId, date }) {
     params: { region: regionId, date }
   })
   console.log(riskRoutes)
-  const outbreaksGrouped = await doFetch({
+  const outbreaks = await doFetch({
     url: '/api/outbreaks',
     params: {
-      ids: riskRoutes.map((riskRoute) => ({
-        date: riskRoute.properties.outbreakDate,
-        id: riskRoute.properties.outbreakId
-      }))
+      ids: riskRoutes.map((riskRoute) => riskRoute.outbreakId)
     }
   })
-  console.log('Grouped Outbreaks')
-  console.log(outbreaksGrouped)
-  // TODO add date to every outbreak
-  const allOutbreaks = outbreaksGrouped.reduce((acc, currVal) =>
-    [...acc, ...currVal.outbreaks], [])
   return {
-    riskRoutes: featureCollection(riskRoutes),
-    outbreaks: featureCollection(allOutbreaks)
+    riskRoutes: featureCollection(riskRoutes.map((r) => {
+      const { coords, ...props } = r
+      return greatCircle(coords[0], coords[1], { properties: props })
+    })),
+    outbreaks: featureCollection(outbreaks.map((o) => {
+      const { coords, ...props } = o
+      return feature({ type: 'Point', coordinates: coords }, props)
+    }))
   }
 }
