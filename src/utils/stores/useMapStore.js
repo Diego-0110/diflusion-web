@@ -10,8 +10,7 @@ import toast from 'react-hot-toast'
 const initialState = {
   showedData: [featureCollection([]), featureCollection([]), featureCollection([])],
   mapMode: MAP_DATA_ID.riskLevels,
-  date: 1704672000000,
-  // TODO selected dates and current date
+  date: Math.floor(Date.now() / 1000), // JS milliseconds
   selectedDataInfo: [],
   traceInfo: null
 }
@@ -51,11 +50,6 @@ export const useMapStore = create((set, get) => ({
   loadMap: async ({ modeId = get().mapMode, date = get().date }) => {
     // TODO date not null
     // TODO abort fetch
-    // Switch base on modeId
-    //    fetching using TanStack Query
-    //      fetch regions y riskLevels
-    //      fetch outbreaks
-    // set showedData
     const newShowedData = [...initialState.showedData]
     let promise
     switch (modeId) {
@@ -113,7 +107,8 @@ export const useMapStore = create((set, get) => ({
       case MAP_DATA_ID.riskLevels:
         newTraceInfo = await traceRiskLevels({
           regionId: data.info.id,
-          date: data.info.date
+          fromDate: data.info.fromDate,
+          toDate: data.info.toDate
         })
         get().updateMap([
           {

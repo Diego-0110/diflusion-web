@@ -2,7 +2,6 @@ import { featureCollection } from '@turf/helpers'
 import doFetch from './doFetch'
 
 export default async function traceOutbreaks ({ outbreakId, date }) {
-  // TODO add date to data
   const riskRoutes = await doFetch({
     url: '/api/riskRoutes', params: { outbreak: outbreakId, date }
   })

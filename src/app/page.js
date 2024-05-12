@@ -8,7 +8,6 @@ import { useMapStore } from '@/utils/stores/useMapStore'
 import { Toaster } from 'react-hot-toast'
 
 export default function Home () {
-  // TODO: change to Zustand
   const showedData = useMapStore((state) => state.showedData)
   const loadMap = useMapStore((state) => state.loadMap)
   useEffect(() => {

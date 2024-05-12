@@ -8,7 +8,12 @@ export async function GET (request) {
   const client = await clientPromise
   const db = client.db(process.env.DB_NAME)
   const collection = db.collection('riskLevels')
-  const riskLevels = await (await collection.find({ date: params.date },
-    { projection: { _id: 0 } })).toArray()
+  const riskLevels = await (await collection.find({
+    $and: [
+      { fromDate: { $lte: params.date } },
+      { toDate: { $gte: params.date } }
+    ]
+  },
+  { projection: { _id: 0 } })).toArray()
   return Response.json({ data: riskLevels })
 }

@@ -2,26 +2,25 @@ import { feature, featureCollection } from '@turf/helpers'
 import doFetch from './doFetch'
 import greatCircle from '@turf/great-circle'
 
-export default async function traceRiskLevels ({ regionId, date }) {
-  const riskRoutes = await doFetch({
-    url: '/api/riskRoutes',
-    params: { region: regionId, date }
+export default async function traceRiskLevels ({ regionId, fromDate, toDate }) {
+  const tracedRiskRoutes = await doFetch({
+    url: '/api/riskLevels/trace',
+    params: { regionId, fromDate, toDate }
   })
-  console.log(riskRoutes)
-  const outbreaks = await doFetch({
-    url: '/api/outbreaks',
-    params: {
-      ids: riskRoutes.map((riskRoute) => riskRoute.outbreakId)
-    }
-  })
-  return {
-    riskRoutes: featureCollection(riskRoutes.map((r) => {
-      const { coords, ...props } = r
-      return greatCircle(coords[0], coords[1], { properties: props })
-    })),
-    outbreaks: featureCollection(outbreaks.map((o) => {
-      const { coords, ...props } = o
-      return feature({ type: 'Point', coordinates: coords }, props)
+  const featureRiskRoutes = []
+  const featureOutbreaks = []
+  for (const rr of tracedRiskRoutes) {
+    const { outbreaks, migration } = rr
+    featureOutbreaks.push(...outbreaks.map((o) => {
+      const { loc, ...props } = o
+      return feature(loc, props)
     }))
+    const { from, to, ...props } = migration
+    featureRiskRoutes.push(greatCircle(from.loc.coordinates, to.loc.coordinates,
+      { properties: props }))
+  }
+  return {
+    riskRoutes: featureCollection(featureRiskRoutes),
+    outbreaks: featureCollection(featureOutbreaks)
   }
 }

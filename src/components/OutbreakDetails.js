@@ -3,14 +3,14 @@ import Property from './Property'
 import { CalendarIcon, FeatherIcon, LocationIcon, MicroBiologyIcon, TraceIcon } from './icons'
 
 export default function OutbreakDetails ({ info, trace }) {
-  const speciesJSX = info.species.map((e) => {
-    if (!e.commonName && !e.scientificName) {
-      return e.type ? `${e.type} Bird` : 'Unknow Bird'
-    }
-    return (
-      `${e.commonName}${e.scientificName ? '/' + e.scientificName : ''} (${e.type})`
-    )
-  })
+  // const speciesJSX = info.species.map((e) => {
+  //   if (!e.commonName && !e.scientificName) {
+  //     return e.type ? `${e.type} Bird` : 'Unknow Bird'
+  //   }
+  //   return (
+  //     `${e.commonName}${e.scientificName ? '/' + e.scientificName : ''} (${e.type})`
+  //   )
+  // })
   return (
     <>
     <header className="mb-4">
@@ -21,8 +21,8 @@ export default function OutbreakDetails ({ info, trace }) {
       <h1 className="text-xl font-bold text-balance">
         {info.city}
       </h1>
-      <span className="block w-fit px-2 rounded-full text-sm text-on-primary bg-primary">
-        #{info.id}
+      <span className="block w-fit max-w-full px-2 rounded-full text-sm text-on-primary text-ellipsis overflow-hidden bg-primary">
+        #{info._id}
       </span>
     </header>
     <section className="px-2">
@@ -31,11 +31,11 @@ export default function OutbreakDetails ({ info, trace }) {
           icon={<LocationIcon size={24} />}/>
         <Property name="City" value={info.city}
           icon={<LocationIcon size={24} />}/>
-        <Property name="Date" value={info.date || '23 Jan. 24'}
+        <Property name="Date" value={new Date(info.reportDate * 1000).toLocaleDateString('es-Es') || '--'}
           icon={<CalendarIcon size={24} />}/>
         <Property name="Serotype" value={info.serotype}
           icon={<MicroBiologyIcon size={24} />}/>
-        <Property name="Species" value={speciesJSX}
+        <Property name="Species" value={info.species}
           icon={<FeatherIcon size={24} />}/>
       </div>
       <div className="flex justify-center">

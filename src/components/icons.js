@@ -1,4 +1,3 @@
-// TODO: change sharp icons to rounded icons
 export function MapIcon ({ size = 32, color = 'currentColor', ...props }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width={size} viewBox="0 0 24 24" {...props}>

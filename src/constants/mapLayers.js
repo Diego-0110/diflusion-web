@@ -85,8 +85,11 @@ export const riskLevelsFillLayer = {
       ['==', ['get', 'level'], 3], '#de8a1b',
       ['==', ['get', 'level'], 2], '#dec71b',
       ['==', ['get', 'level'], 1], '#ded41b',
-      '#90de1b'],
-    'fill-opacity': 0.8
+      ['==', ['get', 'level'], 0], '#fafafa',
+      '#fafafa'],
+    'fill-opacity': ['case',
+      ['has', 'level'], 0.8, 0
+    ]
   }
 }
 

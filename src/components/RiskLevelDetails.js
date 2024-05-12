@@ -1,8 +1,10 @@
 import CircularGauge from './CircularGuage'
 import Property from './Property'
 import { CalendarIcon, LocationIcon, TraceIcon } from './icons'
+import { formatDateFromEpoch } from '@/utils/dates'
 
 export default function RiskLevelsDetails ({ info, trace }) {
+  const formattedDate = `${formatDateFromEpoch(info.fromDate)} - ${formatDateFromEpoch(info.toDate)}`
   return (
     <>
     <header className="mb-4">
@@ -23,7 +25,7 @@ export default function RiskLevelsDetails ({ info, trace }) {
           icon={<LocationIcon size={24} />}/>
         <Property name="Department" value={info.adminDivNUT2}
           icon={<LocationIcon size={24} />}/>
-        <Property name="Date" value={info.date || '27 Nov - 3 Dec. 2023'}
+        <Property name="Date" value={formattedDate}
           icon={<CalendarIcon size={24} />}/>
       </div>
       <div className="flex justify-center">
@@ -33,9 +35,6 @@ export default function RiskLevelsDetails ({ info, trace }) {
           &nbsp;Show Trace
         </button>
       </div>
-      {/* <p className="break-words">
-        {JSON.stringify(selectedDataInfo[selectedDataInfo.length - 1])}
-      </p> */}
     </section>
     </>
   )

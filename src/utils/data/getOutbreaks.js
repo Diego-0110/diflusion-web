@@ -5,13 +5,13 @@ export default async function getOutbreaks ({ date }) {
   const outbreaks = await doFetch({
     url: '/api/outbreaks',
     params: {
-      date: 1703808000000 // TODO remove
+      date
     }
   })
   const featureList = outbreaks.map((o) => {
-    const { coords, ...props } = o
+    const { loc, ...props } = o
     return feature(
-      { type: 'Point', coordinates: coords },
+      loc,
       props
     )
   })

@@ -54,16 +54,6 @@ export default function MapComponent ({ ...props }) {
       >
         <NavigationControl position="bottom-right" />
         <ScaleControl />
-        {/* <Source id="alarms" type="geojson" data={dataGeoJSON} generateId
-          cluster={true} clusterMaxZoom={14} clusterRadius={30}>
-          <Layer {...dataLayer} />
-          <Layer {...clusterCountLayer} />
-          <Layer {...unclusteredPointLayer} />
-        </Source> */}
-        {/* HeatMap */}
-        {/* <Source id="alarms" type="geojson" data="/data/alertas.geojson" generateId>
-          <Layer {...heatmapLayer} />
-        </Source> */}
         <Source id="risk-levels" type="geojson" data={showedData[MAP_DATA_ID.riskLevels]}
           generateId>
             <Layer beforeId="geolines-label" {...riskLevelsFillLayer} />
@@ -71,27 +61,16 @@ export default function MapComponent ({ ...props }) {
         </Source>
         <Source id="outbreaks-s" type="geojson" data={showedData[MAP_DATA_ID.outbreaks]}
           generateId>
-            {/* <Layer beforeId="geolines-label" {...outbreakCircleLayer} /> */}
             <Layer beforeId="geolines-label" {...outbreakCircleShadowLayer} />
-            {/* <Layer beforeId="geolines-label" {...riskLevelsLineLayer} /> */}
         </Source>
         <Source id="outbreaks" type="geojson" data={showedData[MAP_DATA_ID.outbreaks]}
           generateId>
             <Layer beforeId="geolines-label" {...outbreakCircleLayer} />
-            {/* <Layer beforeId="geolines-label" {...outbreakCircleShadowLayer} /> */}
-            {/* <Layer beforeId="geolines-label" {...riskLevelsLineLayer} /> */}
         </Source>
         <Source id="risk-routes" type="geojson" data={showedData[MAP_DATA_ID.riskRoutes]}
           generateId>
             <Layer beforeId="geolines-label" {...riskRoutesLineLayer} />
-            {/* <Layer beforeId="geolines-label" {...riskLevelsLineLayer} /> */}
         </Source>
-        {/* <Source id="data" type="geojson" data={confValues.source}
-          generateId {...confValues.renderModes.heatMap.props}>
-          {confValues.renderModes.heatMap.layers.map((layer, index) => {
-            return <Layer key={index} beforeId="geolines-label" {...layer} />
-          })}
-        </Source> */}
       </Map>
     </div>
   )
