@@ -2,7 +2,7 @@
 
 ## Introduction
 
-
+This is the 'front-end' part of the DiFlusion application for predicting risks of avian influenza outbreaks in Spain.
 
 ## Local Deployment (for development)
 
